@@ -21,8 +21,8 @@ public class CRUD {
     
     public List<Note> getAllNotes() {
         List<Note> notes = new ArrayList<>();
-        notes = getNotesJDBC();
-        //notes = testNoteList();
+        //notes = getNotesJDBC();
+        notes = testNoteList();
 
         return notes;
     }
@@ -53,7 +53,12 @@ public class CRUD {
         return notes;
     }
     
-    public void insert(Note note) {
+    public void insertNote(Note note) {
+        // insert(note);
+        
+    }
+    
+    private void insert(Note note) {
         int max = getMaxIdFromNotes();
         
         try (Connection connection = DriverManager.getConnection(
@@ -97,9 +102,9 @@ public class CRUD {
         list.add(new Note(0, "test", "test", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), null, null));
         list.add(new Note(1, "note2", "test1", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), null, null));
         list.add(new Note(2, "something", "test2", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), null, null));
-        for (int i = 3; i < 25; i++) {
-            list.add(new Note(i, "Lorem", "Ipsum\n\n\nppppp", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), null, null));
-        }
+//        for (int i = 3; i < 25; i++) {
+//            list.add(new Note(i, "Lorem", "Ipsum\n\n\nppppp", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), null, null));
+//        }
 
         return list;
     }
