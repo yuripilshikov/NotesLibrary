@@ -55,11 +55,6 @@ public class SwingProgram implements ActionListener {
         jfrm.setVisible(true);
     }
 
-//    public void recalculateTree() {
-//        top = new DefaultMutableTreeNode("The tree");
-//        createNodes(top);
-//        notesTree = new JTree(top);
-//    }
     private void createNodes(DefaultMutableTreeNode top) {
 
         notesNode = new DefaultMutableTreeNode("Notes");
