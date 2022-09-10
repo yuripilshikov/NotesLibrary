@@ -29,6 +29,8 @@ public class DynamicTree extends JPanel{
     public DynamicTree() {
         super(new GridLayout(1, 0)); // ???
         rootNode = new DefaultMutableTreeNode("root node");
+        // populate
+        populateTree(rootNode);
         treeModel = new DefaultTreeModel(rootNode);
         treeModel.addTreeModelListener(new MyTreeModelListener());
         
@@ -39,6 +41,14 @@ public class DynamicTree extends JPanel{
         
         JScrollPane scrollPane = new JScrollPane(tree);
         add(scrollPane);
+    }
+    
+    public void populateTree(DefaultMutableTreeNode rootNode) {
+        populateTestData(rootNode);        
+    }
+    
+    private void populateTestData(DefaultMutableTreeNode rootNode) {
+        rootNode.add(new DefaultMutableTreeNode("Test"));
     }
     
     public void clear() {

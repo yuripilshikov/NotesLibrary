@@ -26,7 +26,7 @@ import javax.swing.JToolBar;
  *
  * @author YuriPilshikov
  */
-public class LibraryOfNotesSwingGui extends JPanel {
+public class LibraryOfNotesSwingGui extends JPanel implements ActionListener{
     
     private int newNodeSuffix = 1;
     private static String ADD_COMMAND = "add";
@@ -64,18 +64,16 @@ public class LibraryOfNotesSwingGui extends JPanel {
 
         add(jtb, BorderLayout.NORTH);
         
-        ///
-        
+        // text area
         JTextArea note = new JTextArea();
         JScrollPane noteView = new JScrollPane(note);
         
         JSplitPane jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treePanel, noteView);
         add(jsp, BorderLayout.CENTER);
         
-        add(new JLabel("..."), BorderLayout.SOUTH);
-        
+        add(new JLabel("..."), BorderLayout.SOUTH);        
     }  
-
+        
     private static void createAndShowGUI() {
         JFrame mainFrame = new JFrame("Library of notes");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
@@ -99,6 +97,11 @@ public class LibraryOfNotesSwingGui extends JPanel {
         mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         mainFrame.setVisible(true);
     }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+    }
 
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -107,5 +110,4 @@ public class LibraryOfNotesSwingGui extends JPanel {
             }
         });
     }
-
 }
