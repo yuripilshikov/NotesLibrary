@@ -95,6 +95,14 @@ public class DynamicTree extends JPanel implements TreeSelectionListener {
         
         return childNode;
     }
+    
+    public void saveDataStructure(TestNoteClass notes) {
+        DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) treeModel.getRoot();
+        notes.setName(rootNode.toString()); // check!
+        // TODO
+        // Идея в следующем: у нас сохраняется в процессе работы структура в TreeModel. И кнопкой эту модель сохранить в структуру данных.
+        
+    }
 
     @Override
     public void valueChanged(TreeSelectionEvent e) {
@@ -113,7 +121,9 @@ public class DynamicTree extends JPanel implements TreeSelectionListener {
         mp.selectedNode = node;
         mp.jlab.setText(t.getName() + " selected.");
         mp.viewPane.setText("<html><body><h1>" + t.getName() + "</h1><div>" + t.getContent() + "</div></body></html>");
-        mp.editPane.setText(t.getContent());
+        mp.editPane.getContent().setText(t.getContent());
+        mp.editPane.getCaption().setText(t.getName());
+        mp.editPane.getChildren().setText("Child notes count: " + t.getChildren().size());
     }
 
     class MyTreeModelListener implements TreeModelListener {

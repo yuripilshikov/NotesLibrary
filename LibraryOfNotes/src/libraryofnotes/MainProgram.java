@@ -36,11 +36,12 @@ public class MainProgram implements ActionListener {
     JToolBar jtb;
     JTabbedPane jtab;
     JScrollPane jscr;
-    JEditorPane editPane, viewPane, helpPane;
+    JEditorPane viewPane, helpPane;
+    EditPanel editPane;
     
     
     // for tests
-    List<TestNoteClass> notes;
+    TestNoteClass notes;
 
     public MainProgram() {
         //for tests
@@ -98,7 +99,8 @@ public class MainProgram implements ActionListener {
         jbtnSaveNode.addActionListener((ActionEvent e) -> {
             if(selectedNode == null) return;
             TestNoteClass n = (TestNoteClass)selectedNode.getUserObject();
-            n.setContent(editPane.getText());            
+            n.setName(editPane.getCaption().getText());            
+            n.setContent(editPane.getContent().getText());            
         });
         
         jtb.add(jbtnSaveNode);
@@ -108,7 +110,8 @@ public class MainProgram implements ActionListener {
         treePanel = new DynamicTree(this);
         populateTree(treePanel);
         
-        editPane = new JEditorPane();
+        //editPane = new JEditorPane();
+        editPane = new EditPanel(this);
         viewPane = new JEditorPane();
         helpPane = new JEditorPane();
         viewPane.setContentType("text/html");
@@ -139,7 +142,6 @@ public class MainProgram implements ActionListener {
         jtab.add("View", viewPane);
         jtab.add("Help", helpPane);
         
-
         // split pane
         JSplitPane jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treePanel, jscr);
         jsp.setDividerLocation(200);
@@ -169,12 +171,14 @@ public class MainProgram implements ActionListener {
         TestNoteClass parent = new TestNoteClass("Notes", "...");
         DefaultMutableTreeNode p1;
         p1 = tree.addObject(null, parent);
-        for(TestNoteClass n : notes) {
-            DefaultMutableTreeNode currentNode = tree.addObject(p1, n);
-            if(n.getChildren() != null) {
-                traverseNodeChildrenAndAdd(tree, currentNode, n);
-            }
-        }        
+        DefaultMutableTreeNode currentNode = tree.addObject(p1, notes);
+        traverseNodeChildrenAndAdd(tree, p1, notes);
+//        for(TestNoteClass n : notes) {
+//            DefaultMutableTreeNode currentNode = tree.addObject(p1, n);
+//            if(n.getChildren() != null) {
+//                traverseNodeChildrenAndAdd(tree, currentNode, n);
+//            }
+//        }        
     }
     
     public void traverseNodeChildrenAndAdd(DynamicTree tree, DefaultMutableTreeNode parent, TestNoteClass note) {        
@@ -195,15 +199,13 @@ public class MainProgram implements ActionListener {
     
     // This is for testing purpose
     public void createTestNoteList() {
-        notes = new ArrayList<>();
-        notes.add(new TestNoteClass("first", "this is some text"));
-        notes.add(new TestNoteClass("2", "this is some text"));
-        notes.add(new TestNoteClass("3", "this is some text"));
-        notes.add(new TestNoteClass("4", "this is some text"));
-        notes.add(new TestNoteClass("5", "this is some text"));
-        
-        TestNoteClass p = notes.get(2);
-        p.getChildren().add(new TestNoteClass("child 1", "this is some text"));        
+        notes = new TestNoteClass("first", "this is some text");        
+
+        notes.getChildren().add(new TestNoteClass("child 1", "this is some text"));      
+        notes.getChildren().add(new TestNoteClass("child 1", "this is some text"));
+        notes.getChildren().add(new TestNoteClass("child 1", "this is some text"));
+        notes.getChildren().add(new TestNoteClass("child 1", "this is some text"));
+        notes.getChildren().add(new TestNoteClass("child 1", "this is some text"));        
     }
     
 
