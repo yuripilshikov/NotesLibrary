@@ -1,5 +1,6 @@
 package libraryofnotes;
 
+import libraryofnotes.model.TestNoteClass;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +20,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
+import libraryofnotes.db.TestCRUD;
 
 /**
  *
@@ -39,13 +41,17 @@ public class MainProgram implements ActionListener {
     JEditorPane viewPane, helpPane;
     EditPanel editPane;
     
+    TestCRUD crud;
+    
     
     // for tests
     TestNoteClass notes;
 
     public MainProgram() {
         //replace with CRUD later
-        notes = TestNoteClass.testNotes; 
+        //notes = TestNoteClass.testNotes; 
+        crud = new TestCRUD();
+        notes = crud.getNoteTree();
         
         JFrame jfrm = new JFrame("Library of notes");
         // set layout
@@ -88,7 +94,7 @@ public class MainProgram implements ActionListener {
         jbtnCreateNode.addActionListener((ActionEvent e) -> {            
             
             TestNoteClass n = getNoteFromSelectedNode();
-            n.getChildren().add(new TestNoteClass("new note", ""));
+            n.getChildren().add(new TestNoteClass(9, "new note", "")); ////////////////////// TODO: write directly into DB and update root note
             treePanel.clear();
             populateTree(treePanel);
         });
@@ -188,7 +194,7 @@ public class MainProgram implements ActionListener {
         // remove this string later
         tree.clear();
         
-        TestNoteClass parent = new TestNoteClass("Notes", "...");
+        TestNoteClass parent = new TestNoteClass(0, "Notes", "..."); /////////////////// TODO: write directly into DB and update root note
         //DefaultMutableTreeNode p1;
         //p1 = tree.addObject(null, parent);        
         DefaultMutableTreeNode currentNode = tree.addObject(null, notes);

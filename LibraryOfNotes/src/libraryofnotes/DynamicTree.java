@@ -5,6 +5,7 @@
  */
 package libraryofnotes;
 
+import libraryofnotes.model.TestNoteClass;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import javax.swing.JPanel;
@@ -35,7 +36,7 @@ public class DynamicTree extends JPanel implements TreeSelectionListener {
     public DynamicTree(MainProgram mp) {
         super(new GridLayout(1, 0));
         this.mp = mp;
-        rootNode = new DefaultMutableTreeNode(new TestNoteClass("NOTES", "Here be notes"));
+        rootNode = new DefaultMutableTreeNode(new TestNoteClass(1, "NOTES", "Here be notes")); ////// TODO: write directly into DB and update root note
         treeModel = new DefaultTreeModel(rootNode);
         treeModel.addTreeModelListener(new MyTreeModelListener());
 
