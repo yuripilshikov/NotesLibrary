@@ -33,9 +33,9 @@ public class DynamicTree extends JPanel implements TreeSelectionListener {
     private Toolkit toolkit = Toolkit.getDefaultToolkit();
 
     public DynamicTree(MainProgram mp) {
-        super(new GridLayout(1, 0)); // ???
+        super(new GridLayout(1, 0));
         this.mp = mp;
-        rootNode = new DefaultMutableTreeNode("root node");
+        rootNode = new DefaultMutableTreeNode(new TestNoteClass("NOTES", "Here be notes"));
         treeModel = new DefaultTreeModel(rootNode);
         treeModel.addTreeModelListener(new MyTreeModelListener());
 
@@ -91,17 +91,8 @@ public class DynamicTree extends JPanel implements TreeSelectionListener {
         treeModel.insertNodeInto(childNode, parent, parent.getChildCount());
         if (shouldBeVisible) {
             tree.scrollPathToVisible(new TreePath(childNode.getPath()));
-        }
-        
+        }     
         return childNode;
-    }
-    
-    public void saveDataStructure(TestNoteClass notes) {
-        DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) treeModel.getRoot();
-        notes.setName(rootNode.toString()); // check!
-        // TODO
-        // Идея в следующем: у нас сохраняется в процессе работы структура в TreeModel. И кнопкой эту модель сохранить в структуру данных.
-        
     }
 
     @Override

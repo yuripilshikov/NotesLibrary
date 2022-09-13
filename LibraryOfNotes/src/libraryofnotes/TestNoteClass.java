@@ -11,6 +11,16 @@ public class TestNoteClass {
     String name;
     String content;
     List<TestNoteClass> children;
+    
+    public static TestNoteClass testNotes;
+    
+    static {
+        testNotes = new TestNoteClass("Root note", "Philosophy");
+        
+        testNotes.getChildren().add(new TestNoteClass("first level", "e is more narrow.[24][27][28]"));
+        testNotes.getChildren().add(new TestNoteClass("first level another note", "i am too lazy to add more stuff"));
+        testNotes.getChildren().get(0).getChildren().add(new TestNoteClass("first level third note", "Here be something"));
+    }
 
     public TestNoteClass(String name, String content) {
         this.name = name;

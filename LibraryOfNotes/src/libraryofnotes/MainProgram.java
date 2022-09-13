@@ -44,8 +44,8 @@ public class MainProgram implements ActionListener {
     TestNoteClass notes;
 
     public MainProgram() {
-        //for tests
-        createTestNoteList();
+        //replace with CRUD later
+        notes = TestNoteClass.testNotes; 
         
         JFrame jfrm = new JFrame("Library of notes");
         // set layout
@@ -86,7 +86,11 @@ public class MainProgram implements ActionListener {
         jbtnCreateNode.setToolTipText("Create new node");
 
         jbtnCreateNode.addActionListener((ActionEvent e) -> {            
-            treePanel.addObject("New node " + newNodeSuffix++);
+            
+            TestNoteClass n = getNoteFromSelectedNode();
+            n.getChildren().add(new TestNoteClass("new note", ""));
+            treePanel.clear();
+            populateTree(treePanel);
         });
 
         jtb.add(jbtnCreateNode);
@@ -98,9 +102,12 @@ public class MainProgram implements ActionListener {
         
         jbtnSaveNode.addActionListener((ActionEvent e) -> {
             if(selectedNode == null) return;
-            TestNoteClass n = (TestNoteClass)selectedNode.getUserObject();
+            TestNoteClass n = getNoteFromSelectedNode();
             n.setName(editPane.getCaption().getText());            
-            n.setContent(editPane.getContent().getText());            
+            n.setContent(editPane.getContent().getText());        
+            
+            treePanel.clear();
+            populateTree(treePanel);
         });
         
         jtb.add(jbtnSaveNode);
@@ -151,6 +158,19 @@ public class MainProgram implements ActionListener {
         jfrm.add(jlab, BorderLayout.SOUTH);
 
     }
+    
+    // get note from selected node
+    private TestNoteClass getNoteFromSelectedNode() {        
+        Object nodeInfo = selectedNode.getUserObject();
+        TestNoteClass t = null;
+        try {
+            t = (TestNoteClass) nodeInfo;
+        } catch (ClassCastException ex) {
+            System.err.println(ex.getMessage());
+            return null;
+        }
+        return t;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -169,23 +189,17 @@ public class MainProgram implements ActionListener {
         tree.clear();
         
         TestNoteClass parent = new TestNoteClass("Notes", "...");
-        DefaultMutableTreeNode p1;
-        p1 = tree.addObject(null, parent);
-        DefaultMutableTreeNode currentNode = tree.addObject(p1, notes);
-        traverseNodeChildrenAndAdd(tree, p1, notes);
-//        for(TestNoteClass n : notes) {
-//            DefaultMutableTreeNode currentNode = tree.addObject(p1, n);
-//            if(n.getChildren() != null) {
-//                traverseNodeChildrenAndAdd(tree, currentNode, n);
-//            }
-//        }        
+        //DefaultMutableTreeNode p1;
+        //p1 = tree.addObject(null, parent);        
+        DefaultMutableTreeNode currentNode = tree.addObject(null, notes);
+        traverseNodeChildrenAndAdd(tree, currentNode, notes);      
     }
     
     public void traverseNodeChildrenAndAdd(DynamicTree tree, DefaultMutableTreeNode parent, TestNoteClass note) {        
         for(TestNoteClass n : note.getChildren()) {
-            DefaultMutableTreeNode currentNode = tree.addObject(parent, n);
+            DefaultMutableTreeNode currentNode1 = tree.addObject(parent, n);
             if(n.getChildren() != null) {
-                traverseNodeChildrenAndAdd(tree, currentNode, n);
+                traverseNodeChildrenAndAdd(tree, currentNode1, n);
             }
         }
     }
@@ -195,18 +209,4 @@ public class MainProgram implements ActionListener {
             new MainProgram();
         });
     }
-    
-    
-    // This is for testing purpose
-    public void createTestNoteList() {
-        notes = new TestNoteClass("first", "this is some text");        
-
-        notes.getChildren().add(new TestNoteClass("child 1", "this is some text"));      
-        notes.getChildren().add(new TestNoteClass("child 1", "this is some text"));
-        notes.getChildren().add(new TestNoteClass("child 1", "this is some text"));
-        notes.getChildren().add(new TestNoteClass("child 1", "this is some text"));
-        notes.getChildren().add(new TestNoteClass("child 1", "this is some text"));        
-    }
-    
-
 }
