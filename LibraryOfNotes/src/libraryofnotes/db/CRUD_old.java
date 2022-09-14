@@ -8,19 +8,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.sql.Statement;
-import libraryofnotes.model.Note;
+import libraryofnotes.model.Note_old;
 import libraryofnotes.utils.Settings;
 
-public class CRUD {
+public class CRUD_old {
     
     Settings settings;
 
-    public CRUD() {
+    public CRUD_old() {
         settings = new Settings();
     }
     
-    public List<Note> getAllNotes() {
-        List<Note> notes = new ArrayList<>();
+    public List<Note_old> getAllNotes() {
+        List<Note_old> notes = new ArrayList<>();
         //notes = getNotesJDBC();
         notes = testNoteList();
 
@@ -30,10 +30,10 @@ public class CRUD {
     // For now, we will use Glassfish database.
     // root : root
     // jdbc:derby://localhost:1527/NoteLibrary [root on ROOT]
-    private List<Note> getNotesJDBC() {
-        List<Note> notes = new ArrayList<>();
+    private List<Note_old> getNotesJDBC() {
+        List<Note_old> notes = new ArrayList<>();
         
-        Note note = null;
+        Note_old note = null;
 
         try (Connection connection = DriverManager.getConnection(
                 settings.getValue(Settings.URL),
@@ -43,7 +43,7 @@ public class CRUD {
             Statement stm = connection.createStatement(); 
             ResultSet rs = stm.executeQuery("select * from notes");
             while(rs.next()) {
-                note = new Note(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5), null, null);
+                note = new Note_old(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5), null, null);
                 notes.add(note);
             }
         } catch (SQLException ex) {
@@ -53,12 +53,12 @@ public class CRUD {
         return notes;
     }
     
-    public void insertNote(Note note) {
+    public void insertNote(Note_old note) {
         // insert(note);
         
     }
     
-    private void insert(Note note) {
+    private void insert(Note_old note) {
         int max = getMaxIdFromNotes();
         
         try (Connection connection = DriverManager.getConnection(
@@ -97,11 +97,11 @@ public class CRUD {
     }
 
     // for tests
-    private List<Note> testNoteList() {
-        List<Note> list = new ArrayList<>();
-        list.add(new Note(0, "test", "test", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), null, null));
-        list.add(new Note(1, "note2", "test1", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), null, null));
-        list.add(new Note(2, "something", "test2", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), null, null));
+    private List<Note_old> testNoteList() {
+        List<Note_old> list = new ArrayList<>();
+        list.add(new Note_old(0, "test", "test", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), null, null));
+        list.add(new Note_old(1, "note2", "test1", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), null, null));
+        list.add(new Note_old(2, "something", "test2", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), null, null));
 //        for (int i = 3; i < 25; i++) {
 //            list.add(new Note(i, "Lorem", "Ipsum\n\n\nppppp", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), null, null));
 //        }
