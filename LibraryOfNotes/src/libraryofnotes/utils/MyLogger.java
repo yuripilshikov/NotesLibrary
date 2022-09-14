@@ -3,6 +3,7 @@ package libraryofnotes.utils;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MyLogger {
@@ -16,8 +17,9 @@ public class MyLogger {
         return logger;
     }
     
-    public void info(String message) {
-        File file = new File("logfile.log");
+    public void info(String message) {        
+        String today = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+        File file = new File("logfile_" + today + ".log");
         try(FileWriter writer = new FileWriter(file, true);) {
             if(!file.exists()) {
                 file.createNewFile();

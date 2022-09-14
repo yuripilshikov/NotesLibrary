@@ -15,7 +15,6 @@ public class EditPanel extends JPanel {
     private JTextField caption;
     private JEditorPane content;
     private JLabel children;
-    
     private MainProgram mp;
 
     public EditPanel(MainProgram mp) {
@@ -26,7 +25,8 @@ public class EditPanel extends JPanel {
         children = new JLabel("Some text");
         
         add(caption, BorderLayout.NORTH);        
-        JScrollPane contentPane = new JScrollPane(content);
+
+        JScrollPane contentPane = new JScrollPane(content, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         add(contentPane, BorderLayout.CENTER);
         add(children, BorderLayout.SOUTH);
     }
@@ -62,8 +62,4 @@ public class EditPanel extends JPanel {
     public MainProgram getMp() {
         return mp;
     }
-    
-    
-    
-    
 }

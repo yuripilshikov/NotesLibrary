@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package libraryofnotes;
 
-import libraryofnotes.model.TestNoteClass;
+import libraryofnotes.model.SimpleNote;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import javax.swing.JPanel;
@@ -36,7 +31,8 @@ public class DynamicTree extends JPanel implements TreeSelectionListener {
     public DynamicTree(MainProgram mp) {
         super(new GridLayout(1, 0));
         this.mp = mp;
-        rootNode = new DefaultMutableTreeNode(new TestNoteClass(1, "NOTES", "Here be notes")); ////// TODO: write directly into DB and update root note
+        rootNode = new DefaultMutableTreeNode(new SimpleNote(1, "THE VERY ROOT NODE", "Here be notes"));
+        mp.setSelectedNode(rootNode);
         treeModel = new DefaultTreeModel(rootNode);
         treeModel.addTreeModelListener(new MyTreeModelListener());
 
@@ -103,19 +99,19 @@ public class DynamicTree extends JPanel implements TreeSelectionListener {
             return;
         }
         Object nodeInfo = node.getUserObject();
-        TestNoteClass t = null;
+        SimpleNote t = null;
         try {
-            t = (TestNoteClass) nodeInfo;
+            t = (SimpleNote) nodeInfo;
         } catch (ClassCastException ex) {
             System.err.println(ex.getMessage());
             return;
         }
-        mp.selectedNode = node;
-        mp.jlab.setText(t.getName() + " selected.");
-        mp.viewPane.setText("<html><body><h1>" + t.getName() + "</h1><div>" + t.getContent() + "</div></body></html>");
-        mp.editPane.getContent().setText(t.getContent());
-        mp.editPane.getCaption().setText(t.getName());
-        mp.editPane.getChildren().setText("Child notes count: " + t.getChildren().size());
+        mp.setSelectedNode(node);
+        mp.getJlab().setText(t.getName() + " selected.");
+        mp.getViewPane().setText("<html><body><h1>" + t.getName() + "</h1><div>" + t.getContent() + "</div></body></html>");
+        mp.getEditPane().getContent().setText(t.getContent());
+        mp.getEditPane().getCaption().setText(t.getName());
+        mp.getEditPane().getChildren().setText("Child notes count: " + t.getChildren().size());
     }
 
     class MyTreeModelListener implements TreeModelListener {
@@ -127,9 +123,9 @@ public class DynamicTree extends JPanel implements TreeSelectionListener {
             int index = e.getChildIndices()[0];
             node = (DefaultMutableTreeNode) (node.getChildAt(index));
             Object nodeInfo = node.getUserObject();
-            TestNoteClass t = null;
+            SimpleNote t = null;
             try {
-                t = (TestNoteClass) nodeInfo;
+                t = (SimpleNote) nodeInfo;
             } catch (ClassCastException ex) {
                 System.err.println(ex.getMessage());
                 return;
@@ -150,15 +146,3 @@ public class DynamicTree extends JPanel implements TreeSelectionListener {
         }
     }
 }
-
-
-/*
-mp.jlab.setText("Node selected");
-
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) (e.getTreePath().getLastPathComponent());
-        if(node == null) return;
-        Object nodeInfo = node.getUserObject();
-        TestNoteClass t = (TestNoteClass)nodeInfo;
-        
-        mp.viewPane.setText("<html><body><h1>" + t.getName() + "</h1><div>" + t.getContent() + "</div></body></html>");
- */
