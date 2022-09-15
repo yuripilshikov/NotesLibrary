@@ -41,10 +41,13 @@ public class MainProgram implements ActionListener {
     private SimpleCRUD crud;
     private SimpleNote notes;
 
-    public MainProgram() {
+    public MainProgram() {       
 
         crud = new SimpleCRUD();
         notes = crud.getNoteTree();
+        
+        // just tests
+        crud.printProjects();
 
         jfrm = new JFrame("Library of notes");
         // set layout

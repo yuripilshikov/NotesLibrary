@@ -1,12 +1,17 @@
 package libraryofnotes.db;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import libraryofnotes.model.Project;
 import libraryofnotes.model.SimpleNote;
+import libraryofnotes.model.Task;
 import libraryofnotes.utils.MyLogger;
 import libraryofnotes.utils.Settings;
 
@@ -54,8 +59,7 @@ public class SimpleCRUD {
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-        }
-        
+        }        
         return noteTree;
     }
     
@@ -174,24 +178,60 @@ public class SimpleCRUD {
         }
     }
     
-    /////
-    public int getMaxId(){
-        int max = 0;
+    // get projects and tasks
+    // for now, it will just print string.
+    public void printProjects() {
+        Project project = null;
+        
         try (Connection connection = DriverManager.getConnection(
                 settings.getValue(Settings.URL),
                 settings.getValue(Settings.USER),
                 settings.getValue(Settings.PSW)); ) {
             
             Statement stm = connection.createStatement(); 
-            ResultSet rs = stm.executeQuery("select max(id) from testnotes");
+            String sqlQuery = "select id, title from testprojects";
+            ResultSet rs = stm.executeQuery(sqlQuery);
             if(rs.next()) {                
-                max = rs.getInt(1);                
-            } else {
-                max = -1;
-            }            
+                int id = rs.getInt(1);
+                String title = rs.getString(2);
+                project = new Project(id, title);
+                
+            }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-        }                
-        return max;
+        }
+        
+        if(project != null) {
+            project.setTasks(getTasksByProjectID(project.getId()));
+        }
+        
+        System.out.println(project);
+    }
+    
+    public List<Task> getTasksByProjectID(int projectId) {
+        List<Task> tasks = null;
+        
+        try (Connection connection = DriverManager.getConnection(
+                settings.getValue(Settings.URL),
+                settings.getValue(Settings.USER),
+                settings.getValue(Settings.PSW)); ) {
+            
+            Statement stm = connection.createStatement(); 
+            String sqlQuery = "select id, title, content, noteid, createdate, deadline from testtasks where projectid = " + projectId;
+            ResultSet rs = stm.executeQuery(sqlQuery);
+            tasks = new ArrayList<>();
+            if(rs.next()) {                
+                int id = rs.getInt(1);
+                String title = rs.getString(2);
+                String content = rs.getString(3);
+                int noteid = rs.getInt(4);
+                Date createDate = rs.getDate(5);
+                Date deadline = rs.getDate(6);                
+                tasks.add(new Task(id, title, content, null, projectId, createDate, deadline));                                               
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return tasks;
     }
 }
